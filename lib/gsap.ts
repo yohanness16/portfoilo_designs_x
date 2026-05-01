@@ -88,7 +88,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLElement>() {
           y: 0,
           scale: 1,
           duration: 0.6,
-          ease: [0, 0, 0.2, 1],
+          ease: "power2.out",
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
@@ -108,7 +108,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLElement>() {
             y: 0,
             duration: 0.5,
             stagger: 0.1,
-            ease: [0, 0, 0.2, 1],
+            ease: "power2.out",
             scrollTrigger: {
               trigger: el,
               start: "top 80%",
