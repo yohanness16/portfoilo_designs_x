@@ -1,5 +1,3 @@
-"use client";
-
 import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -9,24 +7,25 @@ interface AnimatedLinkProps {
   children: ReactNode;
   className?: string;
   underlineColor?: string;
+  external?: boolean;
 }
 
-/**
- * Animated Link Component
- * Features an underline that slides in from left on hover.
- * Uses Framer Motion for smooth spring-based animation.
- */
 export function AnimatedLink({
   href,
   children,
   className = "",
   underlineColor = "bg-violet-500",
+  external = false,
 }: AnimatedLinkProps) {
   const prefersReduced = useReducedMotion();
 
+  const externalProps = external
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+
   if (prefersReduced) {
     return (
-      <a href={href} className={className}>
+      <a href={href} className={className} {...externalProps}>
         {children}
       </a>
     );
@@ -37,6 +36,7 @@ export function AnimatedLink({
       href={href}
       className={`relative inline-block ${className}`}
       whileHover="hover"
+      {...externalProps}
     >
       {children}
       <motion.span
