@@ -9,6 +9,8 @@ interface MagneticButtonProps {
   className?: string;
   strength?: number;
   onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 /**
@@ -22,6 +24,8 @@ export function MagneticButton({
   className = "",
   strength = 0.3,
   onClick,
+  disabled = false,
+  type = "button",
 }: MagneticButtonProps) {
   const prefersReduced = useReducedMotion();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -30,7 +34,7 @@ export function MagneticButton({
   const y = useSpring(0, { stiffness: 150, damping: 15 });
 
   function handleMouseMove(e: React.MouseEvent<HTMLButtonElement>) {
-    if (prefersReduced || !buttonRef.current) return;
+    if (prefersReduced || !buttonRef.current || disabled) return;
 
     const rect = buttonRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -50,7 +54,7 @@ export function MagneticButton({
 
   if (prefersReduced) {
     return (
-      <button className={className} onClick={onClick}>
+      <button className={className} onClick={onClick} disabled={disabled} type={type}>
         {children}
       </button>
     );
@@ -65,6 +69,8 @@ export function MagneticButton({
       onMouseLeave={handleMouseLeave}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
+      disabled={disabled}
+      type={type}
     >
       {children}
     </motion.button>
