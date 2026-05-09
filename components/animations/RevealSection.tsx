@@ -13,6 +13,8 @@ interface RevealSectionProps {
   direction?: "up" | "down" | "left" | "right" | "none";
   distance?: number;
   duration?: number;
+  threshold?: number;
+  once?: boolean;
 }
 
 /**
@@ -29,11 +31,12 @@ export function RevealSection({
   direction = "up",
   distance = REVEAL.distance,
   duration = REVEAL.duration,
+  threshold = 0.1,
+  once = true,
 }: RevealSectionProps) {
   const prefersReduced = useReducedMotion();
-  const { ref, isInView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+  const { ref, isInView } = useInView<HTMLDivElement>({ threshold, once });
 
-  // Calculate initial translation based on direction
   const getInitialPosition = () => {
     switch (direction) {
       case "up":
