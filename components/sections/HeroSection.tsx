@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ParallaxHero, ParallaxLayer } from "@/components/animations/ParallaxHero";
 import { AnimatedText } from "@/components/animations/AnimatedText";
@@ -9,23 +10,33 @@ import { CursorGlow } from "@/components/animations/CursorGlow";
 import Scene3D from "@/components/effects/Scene3D";
 import { DURATION, EASING, PARALLAX } from "@/lib/animation";
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good Morning";
+  if (hour < 18) return "Good Afternoon";
+  return "Good Evening";
+}
+
 export function HeroSection() {
+  const [greeting, setGreeting] = useState("Welcome");
+
+  useEffect(() => {
+    setGreeting(getGreeting());
+  }, []);
+
   return (
     <>
       <ScrollProgress />
       <CursorGlow />
 
       <ParallaxHero className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0a0f]">
-        {/* 3D Background Scene */}
         <div className="absolute inset-0 -z-10">
           <Scene3D />
         </div>
 
-        {/* Gradient mesh overlay */}
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-violet-900/20 via-transparent to-transparent" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-fuchsia-900/15 via-transparent to-transparent" />
 
-        {/* Parallax background layer */}
         <ParallaxLayer
           speed={PARALLAX.deep}
           className="absolute inset-0 flex items-center justify-center"
@@ -33,7 +44,6 @@ export function HeroSection() {
           <div className="h-[600px] w-[600px] rounded-full bg-violet-600/5 blur-[120px]" />
         </ParallaxLayer>
 
-        {/* Parallax midground layer */}
         <ParallaxLayer
           speed={PARALLAX.midground}
           className="absolute inset-0 flex items-center justify-center"
@@ -41,7 +51,6 @@ export function HeroSection() {
           <div className="h-[400px] w-[400px] translate-x-32 -translate-y-16 rounded-full bg-fuchsia-600/5 blur-[100px]" />
         </ParallaxLayer>
 
-        {/* Main content */}
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -54,7 +63,7 @@ export function HeroSection() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: DURATION.normal, delay: 0.2 }}
             >
-              Full-Stack Developer & Designer
+              {greeting} -- Full-Stack Developer & Designer
             </motion.span>
           </motion.div>
 
@@ -101,7 +110,6 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
