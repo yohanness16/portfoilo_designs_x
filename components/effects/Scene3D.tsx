@@ -17,9 +17,6 @@ const Environment = lazy(() =>
 
 import { useMousePosition } from "@/lib/hooks/useMousePosition";
 
-/* ------------------------------------------------------------------ */
-/*  Detect low-power devices so we can skip the heavy WebGL canvas    */
-/* ------------------------------------------------------------------ */
 function getIsLowPowerDevice(): boolean {
   if (typeof window === "undefined") return false;
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -33,9 +30,6 @@ function getIsLowPowerDevice(): boolean {
   return mq.matches || lowMem || !!slowConn;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Single floating shape                                             */
-/* ------------------------------------------------------------------ */
 function FloatingShape({
   position,
   geometry,
@@ -75,16 +69,13 @@ function FloatingShape({
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Mouse-reactive subtle camera group                                */
-/* ------------------------------------------------------------------ */
 function MouseReactiveGroup() {
   const mouse = useMousePosition();
   return (
     <group
       rotation={[
-        mouse.y * 0.08, // subtle tilt on Y mouse
-        mouse.x * 0.12, // subtle pan on X mouse
+        mouse.y * 0.08,
+        mouse.x * 0.12,
         0,
       ]}
     >
@@ -132,9 +123,6 @@ function MouseReactiveGroup() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Static fallback for low-power / reduced-motion devices            */
-/* ------------------------------------------------------------------ */
 function StaticFallback() {
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -145,9 +133,6 @@ function StaticFallback() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Loading placeholder                                               */
-/* ------------------------------------------------------------------ */
 function CanvasLoader() {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
@@ -156,9 +141,6 @@ function CanvasLoader() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Exported Scene3D component                                        */
-/* ------------------------------------------------------------------ */
 export default function Scene3D() {
   const isLowPower = getIsLowPowerDevice();
 
@@ -170,12 +152,13 @@ export default function Scene3D() {
     <div className="absolute inset-0 -z-10" aria-hidden="true">
       <Suspense fallback={<CanvasLoader />}>
         <Canvas
-          dpr={[1, 1.5]} // cap DPR for performance
+          dpr={[1, 1.5]}
           camera={{ position: [0, 0, 8], fov: 45 }}
           gl={{
             antialias: true,
             alpha: true,
             powerPreference: "high-performance",
+            failIfMajorPerformanceCaveat: false,
           }}
           style={{ background: "transparent" }}
         >
