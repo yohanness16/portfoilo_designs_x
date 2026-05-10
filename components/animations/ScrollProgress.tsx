@@ -8,6 +8,7 @@ interface ScrollProgressProps {
   className?: string;
   barColor?: string;
   height?: number;
+  showPercentage?: boolean;
 }
 
 /**
@@ -20,6 +21,7 @@ export function ScrollProgress({
   className = "",
   barColor = "bg-gradient-to-r from-violet-500 to-fuchsia-500",
   height = 3,
+  showPercentage = false,
 }: ScrollProgressProps) {
   const progress = useScrollProgress();
   const prefersReduced = useReducedMotion();
@@ -37,11 +39,18 @@ export function ScrollProgress({
       role="progressbar"
       aria-valuenow={Math.round(progress * 100)}
       aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label="Page scroll progress"
     >
       <motion.div
         className={`h-full w-full origin-left ${barColor}`}
         style={{ scaleX }}
       />
+      {showPercentage && (
+        <span className="absolute right-2 top-2 text-[10px] text-zinc-400 font-mono">
+          {Math.round(progress * 100)}%
+        </span>
+      )}
     </div>
   );
 }
