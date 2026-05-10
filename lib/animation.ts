@@ -60,6 +60,14 @@ export const REVEAL = {
   stagger: 0.1,
 } as const;
 
+// Spring physics presets for Framer Motion
+export const SPRING = {
+  gentle: { stiffness: 120, damping: 14, mass: 0.8 },
+  bouncy: { stiffness: 400, damping: 10, mass: 1 },
+  stiff: { stiffness: 300, damping: 20, mass: 0.5 },
+  soft: { stiffness: 80, damping: 20, mass: 1.2 },
+} as const;
+
 /**
  * Convert degrees to radians
  */
