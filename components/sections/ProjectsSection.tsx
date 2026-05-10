@@ -11,6 +11,7 @@ interface Project {
   tags: string[];
   gradient: string;
   link: string;
+  featured?: boolean;
 }
 
 const projects: Project[] = [
@@ -21,6 +22,7 @@ const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
     gradient: "from-violet-600/20 to-indigo-600/20",
     link: "#",
+    featured: true,
   },
   {
     title: "Real-Time Analytics Dashboard",
@@ -29,6 +31,7 @@ const projects: Project[] = [
     tags: ["React", "D3.js", "WebSocket", "Redis"],
     gradient: "from-fuchsia-600/20 to-pink-600/20",
     link: "#",
+    featured: true,
   },
   {
     title: "AI Content Generator",
@@ -54,7 +57,12 @@ function ProjectCard({ project }: { project: Project }) {
       <div
         className={`relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-gradient-to-br ${project.gradient} p-8 backdrop-blur-sm transition-colors hover:border-violet-500/20`}
       >
-        {/* Glow effect on hover */}
+        {project.featured && (
+          <span className="absolute top-4 right-4 rounded-full bg-violet-500/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-violet-300">
+            Featured
+          </span>
+        )}
+
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-violet-500/0 to-fuchsia-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-hover:from-violet-500/5 group-hover:to-fuchsia-500/5" />
 
         <h3 className="mb-3 text-xl font-bold text-white">{project.title}</h3>
@@ -62,7 +70,6 @@ function ProjectCard({ project }: { project: Project }) {
           {project.description}
         </p>
 
-        {/* Tags */}
         <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
             <span
