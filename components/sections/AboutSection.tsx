@@ -12,6 +12,13 @@ const highlights = [
   { label: "Happy Clients", value: "15+" },
 ];
 
+const timeline = [
+  { year: "2024", title: "Senior Developer", desc: "Leading frontend architecture for SaaS products" },
+  { year: "2022", title: "Full-Stack Developer", desc: "Building end-to-end web applications" },
+  { year: "2021", title: "Frontend Developer", desc: "Specializing in React and modern CSS" },
+  { year: "2020", title: "Started Journey", desc: "First steps into web development" },
+];
+
 export function AboutSection() {
   const prefersReduced = useReducedMotion();
 
@@ -20,7 +27,6 @@ export function AboutSection() {
       id="about"
       className="relative bg-[#0a0a0f] py-32"
     >
-      {/* Subtle section divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
 
       <div className="mx-auto max-w-6xl px-6">
@@ -38,7 +44,6 @@ export function AboutSection() {
         </RevealSection>
 
         <div className="grid gap-16 lg:grid-cols-2">
-          {/* Bio */}
           <RevealSection direction="left" delay={0.1}>
             <div className="space-y-6 text-lg leading-relaxed text-zinc-400">
               <p>
@@ -59,7 +64,6 @@ export function AboutSection() {
             </div>
           </RevealSection>
 
-          {/* Stats grid */}
           <div className="grid grid-cols-2 gap-6">
             {highlights.map((item, i) => (
               <RevealSection
@@ -87,6 +91,26 @@ export function AboutSection() {
             ))}
           </div>
         </div>
+
+        {/* Timeline */}
+        <RevealSection className="mt-20">
+          <h3 className="mb-8 text-2xl font-bold text-white">Experience Timeline</h3>
+          <div className="relative">
+            <div className="absolute left-4 top-0 bottom-0 w-px bg-white/[0.06]" />
+            <div className="space-y-8">
+              {timeline.map((item, i) => (
+                <RevealSection key={item.year} delay={0.1 * i} direction="left">
+                  <div className="relative pl-10">
+                    <div className="absolute left-2.5 top-1.5 h-3 w-3 rounded-full border-2 border-violet-500 bg-[#0a0a0f]" />
+                    <span className="text-sm font-mono text-violet-400">{item.year}</span>
+                    <h4 className="mt-1 text-lg font-semibold text-white">{item.title}</h4>
+                    <p className="mt-1 text-sm text-zinc-500">{item.desc}</p>
+                  </div>
+                </RevealSection>
+              ))}
+            </div>
+          </div>
+        </RevealSection>
       </div>
     </section>
   );
