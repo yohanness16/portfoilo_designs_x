@@ -12,6 +12,7 @@ interface AnimatedTextProps {
   animation?: "fadeUp" | "fadeIn" | "slideIn" | "scaleIn";
   stagger?: number;
   delay?: number;
+  splitBy?: "word" | "character";
 }
 
 /**
@@ -26,11 +27,12 @@ export function AnimatedText({
   animation = "fadeUp",
   stagger = STAGGER.tight,
   delay = 0,
+  splitBy = "word",
 }: AnimatedTextProps) {
   const prefersReduced = useReducedMotion();
   const { ref, isInView } = useInView<HTMLDivElement>({ threshold: 0.1 });
 
-  const words = text.split(" ");
+  const units = splitBy === "character" ? text.split("") : text.split(" ");
 
   const variants = {
     hidden: { opacity: 0 },
@@ -92,13 +94,13 @@ export function AnimatedText({
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {words.map((word, i) => (
+        {units.map((unit, i) => (
           <motion.span
             key={i}
             className="inline-block mr-[0.25em]"
             variants={chosenVariant}
           >
-            {word}
+            {unit}
           </motion.span>
         ))}
       </motion.span>
