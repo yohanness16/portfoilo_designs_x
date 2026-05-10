@@ -14,10 +14,24 @@ const navLinks = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const prefersReduced = useReducedMotion();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+
+      const sections = navLinks.map((l) => l.href.slice(1));
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && el.getBoundingClientRect().top <= 150) {
+          setActiveSection(sections[i]);
+          return;
+        }
+      }
+      setActiveSection("");
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -39,7 +53,6 @@ export function Header() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        {/* Logo */}
         <motion.a
           href="#"
           className="text-xl font-bold tracking-tight text-white"
@@ -52,7 +65,6 @@ export function Header() {
           <span className="text-violet-400">/&gt;</span>
         </motion.a>
 
-        {/* Desktop Nav */}
         <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link, i) => (
             <motion.li
@@ -63,9 +75,19 @@ export function Header() {
             >
               <button
                 onClick={() => handleNavClick(link.href)}
-                className="relative text-sm text-zinc-400 transition-colors hover:text-white"
+                className={`relative text-sm transition-colors ${
+                  activeSection === link.href.slice(1)
+                    ? "text-violet-400"
+                    : "text-zinc-400 hover:text-white"
+                }`}
               >
                 {link.label}
+                {activeSection === link.href.slice(1) && (
+                  <motion.span
+                    layoutId="activeNav"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-violet-400 rounded-full"
+                  />
+                )}
               </button>
             </motion.li>
           ))}
@@ -83,7 +105,6 @@ export function Header() {
           </motion.li>
         </ul>
 
-        {/* Mobile Menu Button */}
         <button
           className="md:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -107,7 +128,6 @@ export function Header() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -121,7 +141,11 @@ export function Header() {
                 <li key={link.href}>
                   <button
                     onClick={() => handleNavClick(link.href)}
-                    className="text-lg text-zinc-300 transition-colors hover:text-white"
+                    className={`text-lg transition-colors ${
+                      activeSection === link.href.slice(1)
+                        ? "text-violet-400"
+                        : "text-zinc-300 hover:text-white"
+                    }`}
                   >
                     {link.label}
                   </button>
