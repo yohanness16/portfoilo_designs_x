@@ -1,42 +1,36 @@
-"use client";
+import { useEffect, useState, useCallback } from "react";
+import { throttle } from "@/lib/utils";
 
-import { useEffect, useState } from "react";
+interface ScrollData {
+  progress: number;
+  direction: "up" | "down" | "none";
+}
 
 /**
- * Hook to track overall page scroll progress (0 to 1).
- * Used for scroll progress indicator.
- * Throttled to 16ms for 60fps performance.
+ * Hook that tracks scroll progress (0-1) and direction.
+ * Throttled for performance.
  */
-export function useScrollProgress(): number {
-  const [progress, setProgress] = useState(0);
+export function useScrollProgress(throttleMs = 16): ScrollData {
+  const [data, setData] = useState<ScrollData>({ progress: 0, direction: "none" });
 
-  useEffect(() => {
-    let ticking = false;
-
-    const updateProgress = () => {
+  const handleScroll = useCallback(
+    throttle(() => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
-      setProgress(Math.min(1, Math.max(0, scrollPercent)));
-      ticking = false;
-    };
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(updateProgress);
-        ticking = true;
-      }
-    };
+      setData((prev) => ({
+        progress: Math.min(Math.max(progress, 0), 1),
+        direction: scrollTop > (prev.progress * docHeight) ? "down" : scrollTop < (prev.progress * docHeight) ? "up" : prev.direction,
+      }));
+    }, throttleMs),
+    [throttleMs]
+  );
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", updateProgress, { passive: true });
-    updateProgress();
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, []);
-
-  return progress;
+  return data;
 }
