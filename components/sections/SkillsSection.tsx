@@ -41,7 +41,6 @@ export function SkillsSection() {
     <section id="skills" className="relative bg-[#0a0a0f] py-32">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
 
-      {/* Background accent */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -left-40 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-violet-600/[0.03] blur-[120px]" />
       </div>
@@ -57,13 +56,15 @@ export function SkillsSection() {
               Technologies
             </span>
           </h2>
+          <p className="mx-auto mt-4 max-w-xl text-zinc-400">
+            Technologies I work with daily to build modern web experiences.
+          </p>
         </RevealSection>
 
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {skillCategories.map((category, catIdx) => (
             <RevealSection key={category.title} delay={0.1 * catIdx} direction="up">
               <div className="group h-full rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition-colors hover:border-violet-500/20 hover:bg-white/[0.04]">
-                {/* Category header */}
                 <div className="mb-6 flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/10 text-lg text-violet-400 transition-colors group-hover:bg-violet-500/20">
                     {category.icon}
@@ -71,7 +72,6 @@ export function SkillsSection() {
                   <h3 className="text-lg font-semibold text-white">{category.title}</h3>
                 </div>
 
-                {/* Skills list */}
                 <ul className="space-y-3">
                   {category.skills.map((skill, skillIdx) => (
                     <motion.li
