@@ -52,3 +52,11 @@ export interface ScrollProgress {
   progress: number; // 0-1
   direction: "up" | "down" | "none";
 }
+
+// Animation-related types
+export type AnimationVariant = "fadeUp" | "fadeIn" | "slideIn" | "scaleIn";
+export type RevealDirection = "up" | "down" | "left" | "right" | "none";
+export type ContainerSize = "sm" | "md" | "lg" | "xl" | "full";
+export type PageTransitionVariant = "default" | "fade" | "scale";
+export type SplitMode = "word" | "character";
+export type GeometryType = "icosahedron" | "torus" | "octahedron" | "dodecahedron";
