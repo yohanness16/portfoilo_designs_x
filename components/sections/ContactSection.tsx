@@ -40,21 +40,22 @@ export function ContactSection() {
   const prefersReduced = useReducedMotion();
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
     await new Promise((r) => setTimeout(r, 1000));
     setIsSubmitting(false);
+    setIsSubmitted(true);
     setFormState({ name: "", email: "", message: "" });
+    setTimeout(() => setIsSubmitted(false), 3000);
   };
 
   return (
     <section id="contact" className="relative bg-[#0a0a0f] py-32">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/20 to-transparent" />
 
-      {/* Background accent */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -right-40 bottom-0 h-[400px] w-[400px] rounded-full bg-fuchsia-600/[0.03] blur-[120px]" />
       </div>
@@ -77,9 +78,8 @@ export function ContactSection() {
         </RevealSection>
 
         <div className="grid gap-16 lg:grid-cols-2">
-          {/* Contact Form */}
           <RevealSection direction="left">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               <div>
                 <label htmlFor="name" className="mb-2 block text-sm font-medium text-zinc-300">
                   Name
@@ -123,14 +123,25 @@ export function ContactSection() {
                 />
               </div>
               <MagneticButton
+                type="submit"
+                disabled={isSubmitting}
                 className="w-full rounded-xl bg-violet-600 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-colors hover:bg-violet-500 disabled:opacity-50"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </MagneticButton>
+
+              {isSubmitted && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center text-sm text-emerald-400"
+                >
+                  Message sent successfully! I&apos;ll get back to you soon.
+                </motion.p>
+              )}
             </form>
           </RevealSection>
 
-          {/* Contact Info */}
           <RevealSection direction="right" delay={0.2}>
             <div className="space-y-8">
               <div>
