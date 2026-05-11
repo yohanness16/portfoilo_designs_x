@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,25 +14,22 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0a0f",
+};
+
 export const metadata: Metadata = {
   title: "Portfolio | Full-Stack Developer & Designer",
   description:
-    "A stunning 2.5D portfolio showcasing modern web development, interactive animations, and creative digital experiences.",
-  keywords: [
-    "portfolio",
-    "developer",
-    "designer",
-    "full-stack",
-    "react",
-    "next.js",
-    "three.js",
-    "web development",
-  ],
-  authors: [{ name: "Portfolio" }],
+    "A 2.5D interactive portfolio showcasing modern web development, 3D animations, and creative design. Built with Next.js, Three.js, and Framer Motion.",
+  keywords: ["portfolio", "developer", "designer", "next.js", "three.js", "react"],
+  authors: [{ name: "Yohannes" }],
   openGraph: {
     title: "Portfolio | Full-Stack Developer & Designer",
     description:
-      "A stunning 2.5D portfolio showcasing modern web development, interactive animations, and creative digital experiences.",
+      "A 2.5D interactive portfolio showcasing modern web development, 3D animations, and creative design.",
     type: "website",
   },
 };
@@ -43,12 +40,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark`}
-      suppressHydrationWarning
-    >
-      <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
+    <html lang="en" className="dark">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0f] text-white`}
+      >
         {children}
       </body>
     </html>
