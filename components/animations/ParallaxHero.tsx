@@ -6,7 +6,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface ParallaxLayerProps {
   children: ReactNode;
-  speed: number; // 0 = stationary, 1 = normal scroll, >1 = faster than scroll
+  speed: number;
   className?: string;
 }
 
@@ -23,8 +23,6 @@ function ParallaxLayer({ children, speed, className = "" }: ParallaxLayerProps) 
     offset: ["start end", "end start"],
   });
 
-  // Map scroll progress to translateY based on speed
-  // Speed 0 = no movement, 1 = normal, >1 = faster
   const y = useTransform(
     scrollYProgress,
     [0, 1],
@@ -47,6 +45,7 @@ function ParallaxLayer({ children, speed, className = "" }: ParallaxLayerProps) 
 interface ParallaxHeroProps {
   children?: ReactNode;
   className?: string;
+  id?: string;
 }
 
 /**
@@ -61,15 +60,19 @@ interface ParallaxHeroProps {
  *     <ParallaxLayer speed={1.3}>Foreground accent</ParallaxLayer>
  *   </ParallaxHero>
  */
-export function ParallaxHero({ children, className = "" }: ParallaxHeroProps) {
+export function ParallaxHero({ children, className = "", id }: ParallaxHeroProps) {
   const prefersReduced = useReducedMotion();
 
   if (prefersReduced) {
-    return <section className={className}>{children}</section>;
+    return (
+      <section className={className} id={id}>
+        {children}
+      </section>
+    );
   }
 
   return (
-    <section className={`relative overflow-hidden ${className}`}>
+    <section className={`relative overflow-hidden ${className}`} id={id}>
       {children}
     </section>
   );
