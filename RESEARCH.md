@@ -396,3 +396,41 @@ lib/
 - Josh Comeau: Hardware-Accelerated CSS -- joshwcomeau.com/animation/css-transitions/
 - MDN: mix-blend-mode -- developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode
 - Tailwind CSS Animation Utilities -- tailwindcss.com/docs/animation
+
+## Implementation Notes (2026-05-11)
+
+### Completed Features
+- 3D parallax hero with multi-layer scroll depth
+- GSAP ScrollTrigger integration for scroll-linked animations
+- Framer Motion page transitions with multiple variants
+- 3D card tilt with glare effect and spring physics
+- Cursor glow with idle detection
+- Magnetic button with proximity attraction
+- Scroll progress indicator with spring interpolation
+- Animated text with word/character-level reveal
+- Reveal sections with configurable direction and threshold
+- Floating shapes with WebGL and CSS fallback
+- Responsive header with active section tracking
+- Contact form with success feedback
+- Experience timeline in about section
+- Featured project badges
+- Footer navigation links
+- Comprehensive accessibility (reduced motion, ARIA, focus management)
+- Performance optimizations (RAF-based hooks, throttled events, lazy loading)
+- Error boundaries for WebGL components
+- TypeScript type definitions for all animation variants
+
+### Performance Considerations
+- RAF-based mouse/scroll tracking for 60fps animations
+- Throttled event listeners for non-critical updates
+- Lazy-loaded Three.js canvas to reduce initial bundle
+- DPR capping at 1.5x for WebGL rendering
+- Low-power device detection for graceful degradation
+- Passive event listeners throughout
+
+### Accessibility
+- prefers-reduced-motion respected in every component
+- ARIA labels on progress bars and interactive elements
+- Focus-visible outlines for keyboard navigation
+- Screen-reader only utility class
+- Semantic HTML structure (main, section, nav, header, footer)
