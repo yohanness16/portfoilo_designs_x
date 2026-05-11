@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger plugin (only on client)
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -12,14 +11,6 @@ if (typeof window !== "undefined") {
 /**
  * Hook to initialize GSAP ScrollTrigger parallax on an element.
  * Apply data-speed attribute to control parallax speed (0.2 = slow, 1.5 = fast).
- *
- * Usage:
- *   const ref = useParallax();
- *   <div ref={ref}>
- *     <div data-speed="0.2">Background layer</div>
- *     <div data-speed="1.0">Normal layer</div>
- *     <div data-speed="1.5">Foreground layer</div>
- *   </div>
  */
 export function useParallax<T extends HTMLElement = HTMLElement>() {
   const ref = useRef<T>(null);
@@ -42,7 +33,6 @@ export function useParallax<T extends HTMLElement = HTMLElement>() {
             start: "top bottom",
             end: "bottom top",
             scrub: true,
-            // Use GPU-accelerated transforms
             invalidateOnRefresh: true,
           },
         });
@@ -58,10 +48,6 @@ export function useParallax<T extends HTMLElement = HTMLElement>() {
 /**
  * Hook for scroll-triggered section reveals.
  * Animates children from hidden state to visible on viewport entry.
- *
- * Usage:
- *   const { ref, isInView } = useScrollReveal();
- *   <section ref={ref} className={isInView ? "visible" : ""}>...</section>
  */
 export function useScrollReveal<T extends HTMLElement = HTMLElement>() {
   const ref = useRef<T>(null);
@@ -70,7 +56,6 @@ export function useScrollReveal<T extends HTMLElement = HTMLElement>() {
     const el = ref.current;
     if (!el) return;
 
-    // Check for reduced motion
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
       el.style.opacity = "1";
@@ -79,7 +64,6 @@ export function useScrollReveal<T extends HTMLElement = HTMLElement>() {
     }
 
     const ctx = gsap.context(() => {
-      // Animate the section container
       gsap.fromTo(
         el,
         { opacity: 0, y: 60, scale: 0.95 },
@@ -97,7 +81,6 @@ export function useScrollReveal<T extends HTMLElement = HTMLElement>() {
         }
       );
 
-      // Stagger-animate direct children with data-reveal attribute
       const children = el.querySelectorAll<HTMLElement>("[data-reveal]");
       if (children.length > 0) {
         gsap.fromTo(
@@ -161,6 +144,14 @@ export function useHorizontalScroll<T extends HTMLElement = HTMLElement>() {
   }, []);
 
   return ref;
+}
+
+/**
+ * Utility to batch-refresh all ScrollTrigger instances.
+ * Useful after dynamic content changes.
+ */
+export function refreshScrollTriggers() {
+  ScrollTrigger.refresh();
 }
 
 export { gsap };
